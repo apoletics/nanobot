@@ -37,7 +37,10 @@ class LiteLLMProvider(LLMProvider):
         # provider_name (from config key) is the primary signal;
         # api_key / api_base are fallback for auto-detection.
         self._gateway = find_gateway(provider_name, api_key, api_base)
-        self.llm_timeout = int(os.getenv("LLM_TIMEOUT", 600))
+        try:
+            self.llm_timeout = int(os.getenv("LLM_TIMEOUT", 600))
+        except ValueError:
+            self.llm_timeout = 600  # Fallback to default if env var is not a number
         
         # Configure environment variables
         if api_key:
