@@ -139,7 +139,7 @@ class LiteLLMProvider(LLMProvider):
         self._apply_model_overrides(model, kwargs)
 
         # Add timeout for LLM
-            kwargs["timeout"] = self.llm_timeout
+        kwargs["timeout"] = self.llm_timeout
         
         # Pass api_key directly — more reliable than env vars alone
         if self.api_key:
