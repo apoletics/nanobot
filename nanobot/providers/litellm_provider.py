@@ -37,6 +37,7 @@ class LiteLLMProvider(LLMProvider):
         # provider_name (from config key) is the primary signal;
         # api_key / api_base are fallback for auto-detection.
         self._gateway = find_gateway(provider_name, api_key, api_base)
+        self.llm_timeout = int(os.getenv("LLM_TIMEOUT", 600))
         
         # Configure environment variables
         if api_key:
@@ -136,6 +137,9 @@ class LiteLLMProvider(LLMProvider):
         
         # Apply model-specific overrides (e.g. kimi-k2.5 temperature)
         self._apply_model_overrides(model, kwargs)
+
+        # Add timeout for LLM
+            kwargs["timeout"] = self.llm_timeout
         
         # Pass api_key directly — more reliable than env vars alone
         if self.api_key:
